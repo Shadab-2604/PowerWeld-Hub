@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerWeld Hub - Home</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <i class="fas fa-bolt"></i> PowerWeld Hub
+                </a>
+                <!-- <nav>
+                    <a href="/login" class="btn btn-primary">Admin Login</a>
+                </nav> -->
+            </div>
+        </div>
+    </header>
+
+   <!-- Floating WhatsApp Button -->
+<a href="https://wa.me/8169737769" target="_blank">
+    <button class="floating-wts-btn">
+        <i class="fab fa-whatsapp"></i> <!-- Font Awesome WhatsApp icon -->
+    </button>
+</a>
+
+
+    <main class="container mt-2">
+        <!-- <section class="text-center mb-2">
+            <h1>Welcome to PowerWeld Hub</h1>
+            <p class="text-gray">Discover our premium selection of welding equipment</p>
+        </section> -->
+
+        <section class="grid">
+            <% products.forEach(product => { %>
+                <article class="card">
+                    <img src="<%= product.image %>" class="card-img" alt="<%= product.name %>">
+                    <div class="card-body">
+                        <h3 class="mb-1"><%= product.name %></h3>
+                        <div class="d-flex justify-between align-center">
+                            <span class="h2">₹<%= product.price.toFixed(2) %></span>
+                            <span class="badge <%= product.inStock ? 'badge-success' : 'badge-danger' %>">
+                                <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            <% }); %>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - PowerWeld Hub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-edit"></i> Edit Product</h1>
+                <a href="/admin" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Admin
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mt-2">
+        <div class="card" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <form action="/admin/edit/<%= product._id %>" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="form-label" for="productName">Product Name</label>
+                        <input type="text" 
+                               id="productName" 
+                               name="name" 
+                               class="form-control" 
+                               value="<%= product.name %>" 
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="productPrice">Price (₹)</label>
+                        <input type="number" 
+                               id="productPrice" 
+                               name="price" 
+                               step="0.01" 
+                               class="form-control" 
+                               value="<%= product.price %>" 
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="productImage">Product Image</label>
+                        <input type="file" 
+                               id="productImage" 
+                               name="image" 
+                               class="form-control" 
+                               accept="image/*">
+                        
+                        <% if (product.image) { %>
+                            <div class="mt-1">
+                                <p class="mb-1">Current Image:</p>
+                                <img src="<%= product.image %>" 
+                                     alt="Current product image" 
+                                     style="max-width: 200px; border-radius: 8px; box-shadow: var(--shadow);">
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label d-flex align-center gap-1">
+                            <input type="checkbox" 
+                                   id="inStock" 
+                                   name="inStock" 
+                                   <%= product.inStock ? 'checked' : '' %>>
+                            <span>In Stock</span>
+                        </label>
+                    </div>
+
+                    <div class="d-flex gap-1 mt-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-save"></i> Update Product
+                        </button>
+                        <a href="/admin" class="btn btn-danger w-100">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Image preview functionality
+        const imageInput = document.getElementById('productImage');
+        const currentImage = document.querySelector('img[alt="Current product image"]');
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    if (currentImage) {
+                        currentImage.src = event.target.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

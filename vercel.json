@@ -12,9 +12,10 @@
       "dest": "/server.js"
     }
   ],
-  "build": {
-    "env": {
-      "NPM_FLAGS": "--legacy-peer-deps"
-    }
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "scripts": {
+    "postinstall": "npm install --legacy-peer-deps"
   }
 }

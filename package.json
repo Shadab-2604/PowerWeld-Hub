@@ -19,6 +19,7 @@
     "call-bind-apply-helpers": "^1.0.1",
     "call-bound": "^1.0.3",
     "chalk": "^4.1.2",
+    "cloudinary": "^2.5.1",
     "color-convert": "^2.0.1",
     "color-name": "^1.1.4",
     "concat-map": "^0.0.1",
@@ -79,6 +80,7 @@
     "mquery": "^5.0.0",
     "ms": "^2.0.0",
     "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
     "negotiator": "^0.6.3",
     "object-assign": "^4.1.1",
     "object-inspect": "^1.13.3",
@@ -122,7 +124,6 @@
     "whatwg-url": "^13.0.0",
     "xtend": "^4.0.2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"

@@ -5,101 +5,369 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PowerWeld Hub - Admin</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+                :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #ecf0f1;
+            --text-color: #34495e;
+            --card-background: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: 60px;
+            line-height: 1.6;
+        }
+
+        body.dark-mode {
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-background: #2c2c2c;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: var(--secondary-color);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            font-size: 1.2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #ffffff;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .card-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+       /* Update stock status colors to be lighter */
+.stock-status {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.in-stock {
+    background-color: #e3f6e5;  /* Lighter green */
+    color: #2f9e44;
+}
+
+.out-of-stock {
+    background-color: #fff5f5;  /* Lighter red */
+    color: #e03131;
+}
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--secondary-color);
+                padding: 10px;
+            }
+            .navbar-nav.show {
+                display: flex;
+            }
+            .hamburger {
+                display: block;
+            }
+        }
+        .admin-header {
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        .admin-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .admin-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <header class="admin-header">
-        <div class="container">
-            <div class="header-content">
-                <h1><i class="fas fa-tools"></i> Admin Dashboard</h1>
-                <div class="d-flex gap-1">
-                    <a href="/" class="btn btn-secondary">View Store</a>
-                    <form action="/logout" method="POST" style="margin: 0;">
-                        <button type="submit" class="btn btn-danger">Logout</button>
-                    </form>
-                </div>
-            </div>
+    <nav class="navbar">
+        <div class="navbar-brand">PowerWeld Hub - Admin</div>
+        <div class="navbar-nav">
+            <a href="/">View Store</a>
+            <form action="/logout" method="POST" style="margin: 0;">
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
         </div>
-    </header>
+        <button class="hamburger" id="hamburger">☰</button>
+    </nav>
 
     <main class="container">
-        <!-- Add Product Form -->
-        <section class="card mb-2">
-            <div class="card-body">
-                <h2 class="mb-2">Add New Product</h2>
-                <form action="/admin/add" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label class="form-label" for="productName">Product Name</label>
-                        <input type="text" id="productName" name="name" class="form-control" required>
-                    </div>
+        <div class="admin-header">
+            <h1 class="admin-title">Admin Dashboard</h1>
+        </div>
+        
+        <div class="admin-actions">
+            <h2>Product Management</h2>
+            <button class="btn btn-primary" id="addProductBtn">Add New Product</button>
+        </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="productPrice">Price (₹)</label>
-                        <input type="number" id="productPrice" name="price" step="0.01" class="form-control" required>
-                    </div>
+        <div id="addProductForm" style="display: none;">
+            <h3>Add New Product</h3>
+            <form action="/admin/add" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Price (₹)</label>
+                    <input type="number" id="productPrice" name="price" step="0.01" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="productImage">Product Image</label>
+                    <input type="file" id="productImage" name="image" class="form-control" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="inStock" name="inStock" checked>
+                        In Stock
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Product</button>
+            </form>
+        </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="productImage">Product Image</label>
-                        <input type="file" id="productImage" name="image" class="form-control" accept="image/*" required>
-                        <img id="imagePreview" class="mt-1" style="max-width: 200px; display: none;">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label d-flex align-center gap-1">
-                            <input type="checkbox" id="inStock" name="inStock" checked>
-                            In Stock
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-100">Add Product</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Products Grid -->
-        <section>
-            <h2 class="mb-2">Current Products</h2>
-            <div class="grid">
-                <% products.forEach(product => { %>
-                    <article class="card">
-                        <img src="<%= product.image %>" class="card-img" alt="<%= product.name %>">
-                        <div class="card-body">
-                            <h3 class="mb-1"><%= product.name %></h3>
-                            <div class="mb-1">
-                                <span class="h2">₹<%= product.price.toFixed(2) %></span>
-                                <span class="badge <%= product.inStock ? 'badge-success' : 'badge-danger' %>">
-                                    <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
-                                </span>
-                            </div>
-                            <div class="d-flex gap-1">
-                                <a href="/admin/edit/<%= product._id %>" class="btn btn-secondary w-100">Edit</a>
-                                <form action="/admin/delete/<%= product._id %>" method="POST" class="w-100">
-                                    <button type="submit" class="btn btn-danger w-100">Delete</button>
-                                </form>
-                            </div>
+        <div class="grid">
+            <% products.forEach(product => { %>
+                <article class="card">
+                    <img src="<%= product.image %>" 
+                         class="card-img" 
+                         alt="<%= product.name %>"
+                         onerror="this.src='/placeholder.jpg'"
+                         loading="lazy">
+                    <div class="card-body">
+                        <h2 class="card-title"><%= product.name %></h2>
+                        <p class="card-text">₹<%= product.price.toFixed(2) %></p>
+                        <p class="stock-status <%= product.inStock ? 'in-stock' : 'out-of-stock' %>">
+                            <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
+                        </p>
+                        <div class="admin-actions mt-2">
+                            <a href="/admin/edit/<%= product._id %>" class="btn btn-secondary">Edit</a>
+                            <form action="/admin/delete/<%= product._id %>" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+                            </form>
                         </div>
-                    </article>
-                <% }); %>
-            </div>
-        </section>
+                    </div>
+                </article>
+            <% }); %>
+        </div>
     </main>
 
-    <script>
-        // Image preview functionality
-        const imageInput = document.getElementById('productImage');
-        const imagePreview = document.getElementById('imagePreview');
+    <footer>
+        <p>&copy; 2023 PowerWeld Hub. All rights reserved.</p>
+    </footer>
 
-        imageInput.addEventListener('change', function(e) {
+   
+    <script>
+        const addProductBtn = document.getElementById('addProductBtn');
+        const addProductForm = document.getElementById('addProductForm');
+        const addProductFormElement = document.querySelector('form[action="/admin/add"]'); // Use the specific form selector
+        
+        addProductBtn.addEventListener('click', () => {
+            addProductForm.style.display = addProductForm.style.display === 'none' ? 'block' : 'none';
+        });
+    
+        // Improved form submission handling
+        addProductFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = addProductFormElement.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+    
+            try {
+                const formData = new FormData(addProductFormElement);
+                const response = await fetch('/admin/add', {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                const data = await response.json();
+                if (data.success) {
+                    // Show success message
+                    alert('Product added successfully!');
+                    // Refresh the page to show the new product
+                    window.location.reload();
+                } else {
+                    throw new Error(data.error || 'Failed to add product');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Add Product';
+                // Reset form and hide it
+                addProductFormElement.reset();
+                addProductForm.style.display = 'none';
+            }
+        });
+    
+        // Image validation
+        const imageInput = document.getElementById('productImage');
+        imageInput.addEventListener('change', function (e) {
             const file = e.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    imagePreview.style.display = 'block';
-                    imagePreview.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
+                if (file.size > 5000000) { // 5MB limit
+                    alert('File is too large. Please choose an image under 5MB.');
+                    this.value = '';
+                    return;
+                }
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file.');
+                    this.value = '';
+                    return;
+                }
             }
         });
     </script>
+    
 </body>
 </html>
+

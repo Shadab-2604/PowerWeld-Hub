@@ -467,6 +467,7 @@ input[type="checkbox"] {
   bottom: 30px;
   right: 30px;
   width: 60px;
+  text-decoration: none;
   height: 60px;
   background-color: #25D366;
   color: white;

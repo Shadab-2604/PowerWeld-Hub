@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const path = require('path');
 const session = require('express-session');
 const app = express();
 
@@ -44,7 +43,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .then(() => console.log('Database connected'))
   .catch((err) => console.error('Database connection error:', err));
 
-// Product Model with Cloudinary fields
+// Product Model
 const Product = mongoose.model('Product', {
   name: { type: String, required: true },
   price: { type: Number, required: true },
@@ -96,10 +95,10 @@ app.get('/admin', requireAuth, async (req, res) => {
   }
 });
 
-app.post('/admin/add', requireAuth, upload.single('image'), async (req, res) => {
+app.post('/admin/add', requireAuth, upload.single('image'), async (req, res, next) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ success: false, error: 'Image is required' });
+      throw new Error('Image is required');
     }
 
     const product = new Product({
@@ -111,18 +110,32 @@ app.post('/admin/add', requireAuth, upload.single('image'), async (req, res) => 
     });
 
     await product.save();
-    res.json({ success: true, product });
+    res.redirect('/admin');
   } catch (err) {
-    console.error('Error adding product:', err);
-    res.status(500).json({ success: false, error: err.message });
+    next(err); // Pass the error to the error handling middleware
   }
 });
 
+// Add this route to handle GET requests for editing a product
+app.get('/admin/edit/:id', requireAuth, async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).render('error', { error: 'Product not found' });
+    }
+    res.render('edit-product', { product });
+  } catch (err) {
+    console.error('Error fetching product for edit:', err);
+    res.status(500).render('error', { error: 'Failed to load product for editing' });
+  }
+});
+
+// Update the POST route for editing a product
 app.post('/admin/edit/:id', requireAuth, upload.single('image'), async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
-      return res.status(404).send('Product not found');
+      return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
     if (req.file) {
@@ -137,10 +150,19 @@ app.post('/admin/edit/:id', requireAuth, upload.single('image'), async (req, res
     product.inStock = req.body.inStock === 'on';
 
     await product.save();
+
+    // Check if it's an AJAX request
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+      return res.json({ success: true, message: 'Product updated successfully' });
+    }
+    
     res.redirect('/admin');
   } catch (err) {
     console.error('Error updating product:', err);
-    res.status(500).send('Error updating product');
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+      return res.status(500).json({ success: false, message: 'Error updating product' });
+    }
+    res.status(500).render('error', { error: 'Error updating product' });
   }
 });
 
@@ -187,15 +209,13 @@ app.post('/logout', (req, res) => {
   });
 });
 
-// Add this new route for the contact page
 app.get('/contact', (req, res) => {
   res.render('contact');
 });
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).render('error', { error: 'Something broke!' });
+  res.status(500).render('error', { error: err.message || 'Something went wrong!' });
 });
 
 const PORT = process.env.PORT || 3000;

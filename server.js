@@ -38,10 +38,15 @@ const upload = multer({
   }
 });
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Database connected'))
-  .catch((err) => console.error('Database connection error:', err));
+// MongoDB connection with improved error handling
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Database connected');
+  })
+  .catch((err) => {
+    console.error('Database connection error:', err.message);
+    process.exit(1); // Exit the process if connection fails
+  });
 
 // Product Model
 const Product = mongoose.model('Product', {

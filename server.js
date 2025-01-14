@@ -212,6 +212,42 @@ app.post('/logout', (req, res) => {
 app.get('/contact', (req, res) => {
   res.render('contact');
 });
+
+
+app.get('/product/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).render('error', { error: 'Product not found' });
+    }
+
+    res.render('product-details', {
+      product,
+      compatibleMachines: [
+        '/images/machine1.jpg',
+        '/images/machine2.jpg',
+        '/images/machine3.jpg',
+        '/images/machine4.jpg',
+        '/images/machine6.jpg',
+        '/images/machine7.jpg',
+        '/images/machine8.jpg',
+        '/images/machine9.jpg',
+        '/images/machine10.jpg',
+        '/images/machine11.jpg',
+        '/images/machine12.jpg',
+        '/images/machine13.jpg',
+        '/images/machine14.jpg',
+        '/images/machine15.jpg'
+      ] // Add static machine images
+    });
+  } catch (err) {
+    console.error('Error fetching product details:', err);
+    res.status(500).render('error', { error: 'Failed to load product details' });
+  }
+});
+
+
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

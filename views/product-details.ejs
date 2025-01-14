@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.name %> - Details</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #ecf0f1;
+            --text-color: #34495e;
+            --card-background: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: 60px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        body.dark-mode {
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-background: #2c2c2c;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: var(--secondary-color);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .product-header {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .product-image {
+            width: 400px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .stock-status {
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .in-stock {
+            background-color: #e3f6e5;
+            color: #2f9e44;
+        }
+
+        .out-of-stock {
+            background-color: #fff5f5;
+            color: #e03131;
+        }
+
+        .compatible-machines {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .compatible-machines h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+
+        .machines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .machine-card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .machine-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .machine-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .floating-wts-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .floating-wts-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .product-header {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .product-image {
+                width: 100%;
+                height: 300px;
+            }
+
+            .machines-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">PowerWeld Hub</a>
+        <a href="/" class="btn btn-secondary">Go Back</a>
+    </nav>
+
+    <main class="container">
+        <div class="product-header">
+            <img src="<%= product.image %>" alt="<%= product.name %>" class="product-image">
+            <div class="product-info">
+                <h1 class="product-title"><%= product.name %></h1>
+                <p class="product-price">₹<%= product.price.toFixed(2) %></p>
+                <span class="stock-status <%= product.inStock ? 'in-stock' : 'out-of-stock' %>">
+                    <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
+                </span>
+            </div>
+        </div>
+
+        <div class="compatible-machines">
+            <h3>Compatible Machines</h3>
+            <div class="machines-grid">
+                <% compatibleMachines.forEach(machine => { %>
+                    <div class="machine-card">
+                        <img src="<%= machine %>" alt="Compatible Machine">
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </main>
+
+    <a href="https://wa.me/918169737769" class="floating-wts-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Theme toggle functionality
+        const body = document.body;
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>

@@ -97,18 +97,25 @@
         }
 
         .card {
-            background-color: var(--card-background);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+        background-color: var(--card-background);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;  /* Added cursor pointer to show it's clickable */
+    }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
 
+    /* Remove underline from card links */
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
         .card-img {
             width: 100%;
             height: 200px;
@@ -227,21 +234,18 @@
         <p class="text-center mb-4">Discover our wide range of high-quality welding products</p>
         <div class="grid">
             <% products.forEach(product => { %>
-                <!-- Replace the existing product card in index.ejs -->
-<article class="card">
-    <img src="<%= product.image %>" 
-         class="card-img" 
-         alt="<%= product.name %>"
-         onerror="this.src='/placeholder.jpg'"
-         loading="lazy">
-    <div class="card-body">
-        <h2 class="card-title"><%= product.name %></h2>
-        <p class="card-text">₹<%= product.price.toFixed(2) %></p>
-        <span class="stock-status <%= product.inStock ? 'in-stock' : 'out-of-stock' %>">
-            <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
-        </span>
-    </div>
-</article>
+                <article class="card">
+                    <a href="/product/<%= product._id %>" class="card-link">
+                        <img src="<%= product.image %>" class="card-img" alt="<%= product.name %>">
+                        <div class="card-body">
+                            <h2 class="card-title"><%= product.name %></h2>
+                            <p class="card-text">₹<%= product.price.toFixed(2) %></p>
+                            <span class="stock-status <%= product.inStock ? 'in-stock' : 'out-of-stock' %>">
+                                <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
+                            </span>
+                        </div>
+                    </a>
+                </article>
             <% }); %>
         </div>
     </main>

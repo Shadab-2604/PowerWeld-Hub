@@ -39,7 +39,7 @@ const upload = multer({
 });
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Database connected'))
   .catch((err) => console.error('Database connection error:', err));
 
@@ -52,6 +52,7 @@ const Product = mongoose.model('Product', {
   cloudinaryId: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });
+
 
 // Middleware
 app.set('view engine', 'ejs');
